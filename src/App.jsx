@@ -4,13 +4,25 @@ export default function App() {
   const [kirpichtimeconc, setKirpichTimeConc] = useState(0)
   const [kirpichlength, setKirpichLength] = useState(0)
   const [kirpichslope, setKirpichSlope] = useState(0)
+
+  const calculateKirpichTime = () => {
+    const L = parseFloat(kirpichlength);
+    const S = parseFloat(kirpichslope);
+
+    if (L > 0 && S > 0) {
+      const Tc = 0.0195 * Math.pow(L, 0.77) / Math.pow(S, 0.385);
+      setKirpichTimeConc(Tc);
+    } else {
+      setKirpichTimeConc(0);
+    }
+  };
   return (
     <div className="based" style={{ height }}>
       <div className="w-full overflow-hidden py-40 flex items-center justify-center relative min-h-[100vh]">
         <div className="w-full py-6 z-[50] bg-[#000] fixed top-0 flex items-center justify-between">
           <div className="w-full md:px-8 px-4 mx-auto md:max-w-[1500px] flex items-center justify-between">
-          <h3 className="text-3xl md:text-3xl text-[#Fff] font-bold md:text-start">
-             Daniel
+            <h3 className="text-3xl md:text-3xl text-[#Fff] font-bold md:text-start">
+              Daniel
             </h3>
 
             <h3 className="text-lg md:text-xl text-[#Fff] font-semibold md:text-start">
@@ -42,18 +54,18 @@ export default function App() {
                 </label>
                 <label htmlFor="slope" className="text-base font-semibold flex flex-col gap-2">
                   Kirpich Slope
-                  <input  value={kirpichslope} type='number' name="kirpichslope" onChange={(e) => setKirpichSlope(e.target.value)} id="slope" placeholder="Enter the Slope" className="border px-4  border-[rgba(0,0,0,.4)] outline-none text-sm w-full h-[50px] font-normal" />
+                  <input value={kirpichslope} type='number' name="kirpichslope" onChange={(e) => setKirpichSlope(e.target.value)} id="slope" placeholder="Enter the Slope" className="border px-4  border-[rgba(0,0,0,.4)] outline-none text-sm w-full h-[50px] font-normal" />
                 </label>
 
                 <label htmlFor="slope" className="text-base font-semibold flex flex-col gap-2">
                   Kirpich Time Concentration Value
-                  <div className="border px-4  border-[rgba(0,0,0,.4)] outline-none text-sm w-full h-[50px] font-normal" >
-
+                  <div className="border px-4 flex items-center border-[rgba(0,0,0,.4)] outline-none text-sm w-full h-[50px] font-normal" >
+                    {kirpichtimeconc}
                   </div>
                 </label>
 
                 <div className="w-full">
-                  <button style={{ transition: "all ease .4s" }} className="px-4 text-[#fff] bg-[rgba(0,0,0,1)] hover:scale-[0.89] outline-none text-lg font-semibold w-full h-[70px] rounded-lg">
+                  <button onClick={calculateKirpichTime} style={{ transition: "all ease .4s" }} className="px-4 text-[#fff] bg-[rgba(0,0,0,1)] hover:scale-[0.89] outline-none text-lg font-semibold w-full h-[70px] rounded-lg">
                     Submit
                   </button>
                 </div>
