@@ -93,7 +93,7 @@ export default function App() {
         <div className="absolute h-full z-30 w-full gradient2"></div>
         <img src="/images/pics_1.jpg" alt="" className="absolute z-20 object-cover w-full h-full" />
         <div className="w-full h-full lg:px-0 z-40 px-4 md:max-w-[1100px] justify-center mx-auto flex flex-col gap-20">
-          <div className="w-full flex flex-col gap-3">
+          <div className="w-full flex flex-col">
             <div className="hide">
               <h2 className="text-8xl hero_header md:text-9xl md:text-center family1 text-[#fff]">
                 Daniel's Project
