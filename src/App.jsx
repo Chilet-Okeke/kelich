@@ -4,8 +4,8 @@ import SplitType from 'split-type'
 export default function App() {
   const [height, setHeight] = useState(0);
   const [kirpichtimeconc, setKirpichTimeConc] = useState(0)
-  const [kirpichlength, setKirpichLength] = useState(0)
-  const [kirpichslope, setKirpichSlope] = useState(0)
+  const [kirpichlength, setKirpichLength] = useState(null)
+  const [kirpichslope, setKirpichSlope] = useState(null)
 
   const calculateKirpichTime = () => {
     const L = parseFloat(kirpichlength);
