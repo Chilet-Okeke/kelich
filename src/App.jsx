@@ -107,12 +107,12 @@ export default function App() {
         <div className="w-full h-full lg:px-0 z-40 px-4 md:max-w-[1100px] justify-center mx-auto flex flex-col gap-20">
           <div className="w-full flex flex-col">
             <div className="hide">
-              <h2 className="text-8xl hero_header md:text-9xl md:text-center family1 text-[#fff]">
+              <h2 className="text-8xl hero_header md:text-9xl lg:text-center family1 text-[#fff]">
                 Daniel's Project
               </h2>
             </div>
             <div className="hide">
-              <span className="hero_header_2 px-4 md:text-center family2 text-lg md:text-xl text-[var(--grey-1)]">
+              <span className="hero_header_2 px-4 lg:text-center family2 text-lg md:text-xl text-[var(--grey-1)]">
                 A project demonstrating  time of concentration using various Methods
               </span>
             </div>
