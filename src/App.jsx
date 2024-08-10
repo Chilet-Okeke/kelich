@@ -6,7 +6,9 @@ export default function App() {
   const [kirpichtimeconc, setKirpichTimeConc] = useState(0)
   const [kirpichlength, setKirpichLength] = useState(null)
   const [kirpichslope, setKirpichSlope] = useState(null)
-
+  const [scstimeconc, setScsTimeConc] = useState(0)
+  const [scslength, setScsLength] = useState(null)
+  const [scsslope, setScsSlope] = useState(null)
   const calculateKirpichTime = () => {
     const L = parseFloat(kirpichlength);
     const S = parseFloat(kirpichslope);
@@ -18,7 +20,17 @@ export default function App() {
       setKirpichTimeConc(0);
     }
   };
+  const calculateScsime = () => {
+    const L = parseFloat(scslength);
+    const S = parseFloat(scsslope);
 
+    if (L > 0 && S > 0) {
+      const Tc = 0.000877 * Math.pow(L, 0.8) * Math.pow((1000 / .45 - 9), .7) * Math.pow(S, -.5)
+      setScsTimeConc(Tc);
+    } else {
+      setScsTimeConc(0);
+    }
+  };
   useEffect(() => {
     const text1 = new SplitType(".hero_header");
     const text2 = new SplitType(".hero_header_2");
@@ -150,22 +162,22 @@ export default function App() {
               <div className="w-full flex flex-col gap-4">
                 <label htmlFor="length" className="text-base font-semibold flex flex-col gap-2">
                   SCS Length
-                  <input id="length" type="text" placeholder="Enter the Length" className="border px-4  border-[rgba(0,0,0,.4)] outline-none text-sm w-full h-[50px] font-normal" />
+                  <input value={scslength} name="scslength" onChange={(e) => setScsLength(e.target.value)} id="length" type="number" placeholder="Enter the Length" className="border px-4  border-[rgba(0,0,0,.4)] outline-none number-sm w-full h-[50px] font-normal" />
                 </label>
                 <label htmlFor="slope" className="text-base font-semibold flex flex-col gap-2">
                   SCS Slope
-                  <input id="slope" type="text" placeholder="Enter the Length" className="border px-4  border-[rgba(0,0,0,.4)] outline-none text-sm w-full h-[50px] font-normal" />
+                  <input id="slope" value={scsslope} name="scsslope" onChange={(e) => setScsSlope(e.target.value)} type="number" placeholder="Enter the Length" className="border px-4  border-[rgba(0,0,0,.4)] outline-none text-sm w-full h-[50px] font-normal" />
                 </label>
 
                 <label htmlFor="slope" className="text-base font-semibold flex flex-col gap-2">
                   SCS Time Concentration Value
-                  <div className="border px-4  border-[rgba(0,0,0,.4)] outline-none text-sm w-full h-[50px] font-normal" >
-
+                  <div className="border flex items-center px-4  border-[rgba(0,0,0,.4)] outline-none text-sm w-full h-[50px] font-normal" >
+                    {scstimeconc}
                   </div>
                 </label>
 
                 <div className="w-full">
-                  <button style={{ transition: "all ease .4s" }} className="px-4 text-[#fff] bg-[rgba(0,0,0,1)] hover:scale-[0.89] outline-none text-lg font-semibold w-full h-[70px] rounded-lg">
+                  <button onClick={calculateScsime} style={{ transition: "all ease .4s" }} className="px-4 text-[#fff] bg-[rgba(0,0,0,1)] hover:scale-[0.89] outline-none text-lg font-semibold w-full h-[70px] rounded-lg">
                     Submit
                   </button>
                 </div>
