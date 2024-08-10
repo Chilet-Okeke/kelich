@@ -91,8 +91,8 @@ export default function App() {
   return (
     <div className="based" style={{ height }}>
       <div className="w-full overflow-hidden py-40 flex items-center justify-center relative min-h-[100vh]">
-        <div className="w-full py-6 z-[50] bg-[#000] fixed top-0 flex items-center justify-between">
-          <div className="w-full md:px-8 px-4 mx-auto md:max-w-[1500px] flex items-center justify-between">
+        <div className="w-full py-6 z-[50] bg-[#000000c2] fixed top-0 flex items-center justify-between">
+          <div className="w-full md:px-8 px-4 mx-auto md:max-w-[1600px] flex items-center justify-between">
             <h3 className="text-3xl md:text-3xl text-[#Fff] font-bold md:text-start">
               Daniel
             </h3>
@@ -104,7 +104,7 @@ export default function App() {
         </div>
         <div className="absolute h-full z-30 w-full gradient2"></div>
         <img src="/images/pics_1.jpg" alt="" className="absolute z-20 object-cover w-full h-full" />
-        <div className="w-full h-full lg:px-0 z-40 px-4 md:max-w-[1100px] justify-center mx-auto flex flex-col gap-20">
+        <div className="w-full h-full lg:px-0 z-40 px-4 md:max-w-[1300px] justify-center mx-auto flex flex-col gap-20">
           <div className="w-full flex flex-col">
             <div className="hide">
               <h2 className="text-8xl hero_header md:text-9xl lg:text-center family1 text-[#fff]">
@@ -148,6 +148,18 @@ export default function App() {
                     Submit
                   </button>
                 </div>
+
+                <div className="w-full flex items-center flex-wrap gap-2">
+                  <span className="flex text-base text-[#000] font-semibold items-center gap-2">
+                    Tc1 =  {kirpichtimeconc}
+                  </span>
+                  <span className="flex text-base text-[#000] font-semibold items-center gap-2">
+                    Tc2 =  {kirpichtimeconc}
+                  </span>
+                  <span className="flex text-base text-[#000] font-semibold items-center gap-2">
+                    Tc200 =  {kirpichtimeconc}
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -180,6 +192,17 @@ export default function App() {
                   <button onClick={calculateScsime} style={{ transition: "all ease .4s" }} className="px-4 text-[#fff] bg-[rgba(0,0,0,1)] hover:scale-[0.89] outline-none text-lg font-semibold w-full h-[70px] rounded-lg">
                     Submit
                   </button>
+                </div>
+                <div className="w-full flex items-center gap-2">
+                  <span className="flex text-sm text-[#000] font-semibold items-center gap-2">
+                    Tc1 =  {scstimeconc}
+                  </span>
+                  <span className="flex text-sm text-[#000] font-semibold items-center gap-2">
+                    Tc2 =  {scstimeconc}
+                  </span>
+                  <span className="flex text-sm text-[#000] font-semibold items-center gap-2">
+                    Tc3 =  {scstimeconc}
+                  </span>
                 </div>
               </div>
             </div>
