@@ -9,11 +9,11 @@ export default function App() {
       <div className="w-full overflow-hidden py-40 flex items-center justify-center relative min-h-[100vh]">
         <div className="w-full py-6 z-[50] bg-[#000] fixed top-0 flex items-center justify-between">
           <div className="w-full md:px-8 px-4 mx-auto md:max-w-[1500px] flex items-center justify-between">
-          <h3 className="text-4xl md:text-3xl text-[#Fff] font-bold md:text-start">
+          <h3 className="text-3xl md:text-3xl text-[#Fff] font-bold md:text-start">
              Daniel
             </h3>
 
-            <h3 className="text-4xl md:text-xl text-[#Fff] font-semibold md:text-start">
+            <h3 className="text-lg md:text-xl text-[#Fff] font-semibold md:text-start">
               Agric Eng.
             </h3>
           </div>
