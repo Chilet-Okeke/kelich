@@ -29,7 +29,7 @@ export default function App() {
           </h2>
           <div className="w-full grid lg:grid-cols-2 gap-12">
             <div className="py-12 px-6 flex w-full rounded-lg bg-[#fff] flex-col gap-8">
-              <h3 className="text-5xl md:text-4xl font-bold md:text-start">
+              <h3 className="text-3xl md:text-4xl font-bold md:text-start">
                 Kirpich Model
                 <span className="block family2 mx-w-[500px] pr-4 text-sm font-normal md:text-base text-[var(--grey-1)]">
                   A project demonstrating  time of concentration using various Methods
@@ -61,7 +61,7 @@ export default function App() {
             </div>
 
             <div className="py-12 px-6 flex w-full rounded-lg bg-[#fff] flex-col gap-8">
-              <h3 className="text-5xl md:text-4xl font-bold md:text-start">
+              <h3 className="text-3xl md:text-4xl font-bold md:text-start">
                 SCS Lag Model
                 <span className="block family2 mx-w-[500px] pr-4 text-sm font-normal md:text-base text-[var(--grey-1)]">
                   A project demonstrating  time of concentration using various Methods
