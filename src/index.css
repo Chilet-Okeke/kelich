@@ -130,6 +130,9 @@ button:disabled {
   color: rgb(141, 141, 141) !important;
 }
 
+.hide {
+  overflow: hidden;
+}
 body {
   margin: 0;
   -webkit-font-smoothing: antialiased;

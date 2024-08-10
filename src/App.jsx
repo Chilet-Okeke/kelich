@@ -1,4 +1,6 @@
-import React, { useState, useEffect, lazy, Suspense } from "react";
+import React, { useState, useEffect } from "react";
+import gsap from "gsap";
+import SplitType from 'split-type'
 export default function App() {
   const [height, setHeight] = useState(0);
   const [kirpichtimeconc, setKirpichTimeConc] = useState(0)
@@ -16,6 +18,64 @@ export default function App() {
       setKirpichTimeConc(0);
     }
   };
+
+  useEffect(() => {
+    const text1 = new SplitType(".hero_header");
+    const text2 = new SplitType(".hero_header_2");
+    // hero_text2
+    // gsap.fromto;
+    // gsap.timeline({ defaults: { ease: "SlowMo.easeOut" } });
+    gsap
+      .timeline()
+      .to("body", { css: { visibility: "visible" } })
+      .fromTo(
+        text2?.chars,
+        {
+          y: "100%",
+          opacity: 0,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          stagger: { amount: 0.6 },
+          duration: 1,
+          ease: "power4.out",
+        },
+        0.4
+      )
+      .fromTo(
+        text1?.words,
+        {
+          y: "100%",
+          opacity: 0,
+          skew: 7,
+        },
+        {
+          y: 0,
+          skew: 0,
+          opacity: 1,
+          stagger: 0.08,
+          duration: 1.6,
+          ease: "power4.out",
+        },
+        0.8
+      )
+      .fromTo(
+        '.hero_card',
+        {
+          y: 50,
+          opacity: 0,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          stagger: 0.2,
+          duration: 1,
+          ease: "power4.out",
+        }
+      );
+  }, []);
+
   return (
     <div className="based" style={{ height }}>
       <div className="w-full overflow-hidden py-40 flex items-center justify-center relative min-h-[100vh]">
@@ -33,14 +93,21 @@ export default function App() {
         <div className="absolute h-full z-30 w-full gradient2"></div>
         <img src="/images/pics_1.jpg" alt="" className="absolute z-20 object-cover w-full h-full" />
         <div className="w-full h-full lg:px-0 z-40 px-4 md:max-w-[1100px] justify-center mx-auto flex flex-col gap-20">
-          <h2 className="text-8xl md:text-9xl md:text-center family1 text-[#fff]">
-            Daniel's Project
-            <span className="block family2 text-lg md:text-xl text-[var(--grey-1)]">
-              A project demonstrating  time of concentration using various Methods
-            </span>
-          </h2>
+          <div className="w-full flex flex-col gap-3">
+            <div className="hide">
+              <h2 className="text-8xl hero_header md:text-9xl md:text-center family1 text-[#fff]">
+                Daniel's Project
+              </h2>
+            </div>
+            <div className="hide">
+              <span className="hero_header_2 px-4 md:text-center family2 text-lg md:text-xl text-[var(--grey-1)]">
+                A project demonstrating  time of concentration using various Methods
+              </span>
+            </div>
+
+          </div>
           <div className="w-full grid lg:grid-cols-2 gap-12">
-            <div className="py-12 px-6 flex w-full rounded-lg bg-[#fff] flex-col gap-8">
+            <div className="py-12 hero_card px-6 flex w-full rounded-lg bg-[#fff] flex-col gap-8">
               <h3 className="text-3xl md:text-4xl font-bold md:text-start">
                 Kirpich Model
                 <span className="block family2 mx-w-[500px] pr-4 text-sm font-normal md:text-base text-[var(--grey-1)]">
@@ -72,7 +139,7 @@ export default function App() {
               </div>
             </div>
 
-            <div className="py-12 px-6 flex w-full rounded-lg bg-[#fff] flex-col gap-8">
+            <div className="py-12 hero_card px-6 flex w-full rounded-lg bg-[#fff] flex-col gap-8">
               <h3 className="text-3xl md:text-4xl font-bold md:text-start">
                 SCS Lag Model
                 <span className="block family2 mx-w-[500px] pr-4 text-sm font-normal md:text-base text-[var(--grey-1)]">
