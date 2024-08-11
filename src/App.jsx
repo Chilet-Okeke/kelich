@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import gsap from "gsap";
 import SplitType from 'split-type'
+import toast from "react-hot-toast";
 export default function App() {
   const [height, setHeight] = useState(0);
-  const [kirpichtimeconc, setKirpichTimeConc] = useState(0)
+  const [kirpichtimeconc, setKirpichTimeConc] = useState([])
   const [kirpichlength, setKirpichLength] = useState(null)
   const [kirpichslope, setKirpichSlope] = useState(null)
   const [scstimeconc, setScsTimeConc] = useState(0)
@@ -12,14 +13,43 @@ export default function App() {
   const calculateKirpichTime = () => {
     const L = parseFloat(kirpichlength);
     const S = parseFloat(kirpichslope);
+    const maxTcValues = 200; // Limit to 200 Tc values
 
-    if (L > 0 && S > 0) {
-      const Tc = 0.0195 * Math.pow(L, 0.77) / Math.pow(S, 0.385);
-      setKirpichTimeConc(Tc);
+    if (L > 0 && S >= 0.001 && S <= 0.2) {
+      let slopes = [];
+      for (let j = S; j <= 0.2; j += 0.001) {
+        slopes.push(j);
+        console.log(`Added slope: ${j}`); // Logging the slope values
+      }
+
+      let lengths = [];
+      for (let i = L; i <= 100; i += 0.5) {
+        lengths.push(i);
+        console.log(`Added length: ${i}`); // Logging the length values
+      }
+
+      let data = [];
+      let tcCount = 0;
+
+      outerLoop:
+      for (let slope of slopes) {
+        for (let length of lengths) {
+          if (tcCount >= slopes?.length - 1) break outerLoop;
+
+          const Tc = 0.0195 * Math.pow(length, 0.77) / Math.pow(slope, 0.385);
+          data.push(`Tc-${length}=${Tc}`);
+          tcCount++;
+
+        }
+      }
+      setKirpichTimeConc(data)
     } else {
-      setKirpichTimeConc(0);
+      console.warn("Please ensure the slope (S) is between 0.001 and 0.2");
     }
   };
+
+
+
   const calculateScsime = () => {
     const L = parseFloat(scslength);
     const S = parseFloat(scsslope);
@@ -88,6 +118,8 @@ export default function App() {
       );
   }, []);
 
+  console.log(kirpichtimeconc)
+
   return (
     <div className="based" style={{ height }}>
       <div className="w-full overflow-hidden py-40 flex items-center justify-center relative min-h-[100vh]">
@@ -107,7 +139,7 @@ export default function App() {
         <div className="w-full h-full lg:px-0 z-40 px-4 md:max-w-[1300px] justify-center mx-auto flex flex-col gap-20">
           <div className="w-full flex flex-col">
             <div className="hide">
-              <h2 className="text-8xl hero_header md:text-9xl lg:text-center family1 text-[#fff]">
+              <h2 className="text-6xl hero_header font-bold md:text-8xl lg:text-center text-[#fff]">
                 Daniel's Project
               </h2>
             </div>
@@ -135,14 +167,6 @@ export default function App() {
                   Kirpich Slope
                   <input value={kirpichslope} type='number' name="kirpichslope" onChange={(e) => setKirpichSlope(e.target.value)} id="slope" placeholder="Enter the Slope" className="border px-4  border-[rgba(0,0,0,.4)] outline-none text-sm w-full h-[50px] font-normal" />
                 </label>
-
-                <label htmlFor="slope" className="text-base font-semibold flex flex-col gap-2">
-                  Kirpich Time Concentration Value
-                  <div className="border px-4 flex items-center border-[rgba(0,0,0,.4)] outline-none text-sm w-full h-[50px] font-normal" >
-                    {kirpichtimeconc}
-                  </div>
-                </label>
-
                 <div className="w-full">
                   <button onClick={calculateKirpichTime} style={{ transition: "all ease .4s" }} className="px-4 text-[#fff] bg-[rgba(0,0,0,1)] hover:scale-[0.89] outline-none text-lg font-semibold w-full h-[70px] rounded-lg">
                     Submit
@@ -150,7 +174,7 @@ export default function App() {
                 </div>
 
                 <div className="w-full flex items-center flex-wrap gap-2">
-                  <span className="flex text-base text-[#000] font-semibold items-center gap-2">
+                  {/* <span className="flex text-base text-[#000] font-semibold items-center gap-2">
                     Tc1 =  {kirpichtimeconc}
                   </span>
                   <span className="flex text-base text-[#000] font-semibold items-center gap-2">
@@ -158,7 +182,7 @@ export default function App() {
                   </span>
                   <span className="flex text-base text-[#000] font-semibold items-center gap-2">
                     Tc200 =  {kirpichtimeconc}
-                  </span>
+                  </span> */}
                 </div>
               </div>
             </div>
@@ -181,31 +205,23 @@ export default function App() {
                   <input id="slope" value={scsslope} name="scsslope" onChange={(e) => setScsSlope(e.target.value)} type="number" placeholder="Enter the Length" className="border px-4  border-[rgba(0,0,0,.4)] outline-none text-sm w-full h-[50px] font-normal" />
                 </label>
 
-                <label htmlFor="slope" className="text-base font-semibold flex flex-col gap-2">
-                  SCS Time Concentration Value
-                  <div className="border flex items-center px-4  border-[rgba(0,0,0,.4)] outline-none text-sm w-full h-[50px] font-normal" >
-                    {scstimeconc}
-                  </div>
-                </label>
-
                 <div className="w-full">
                   <button onClick={calculateScsime} style={{ transition: "all ease .4s" }} className="px-4 text-[#fff] bg-[rgba(0,0,0,1)] hover:scale-[0.89] outline-none text-lg font-semibold w-full h-[70px] rounded-lg">
                     Submit
                   </button>
                 </div>
-                <div className="w-full flex items-center gap-2">
-                  <span className="flex text-sm text-[#000] font-semibold items-center gap-2">
-                    Tc1 =  {scstimeconc}
-                  </span>
-                  <span className="flex text-sm text-[#000] font-semibold items-center gap-2">
-                    Tc2 =  {scstimeconc}
-                  </span>
-                  <span className="flex text-sm text-[#000] font-semibold items-center gap-2">
-                    Tc3 =  {scstimeconc}
-                  </span>
-                </div>
+               
               </div>
             </div>
+          </div>
+          <div className="py-12 hero_card px-6 flex w-full rounded-lg bg-[#fff] items-center flex-wrap gap-4">
+            {
+              kirpichtimeconc?.map((time, index) => {
+                return <span className="flex text-base text-[#000] font-semibold items-center gap-2">
+                  {time},
+                </span>
+              })
+            }
           </div>
         </div>
       </div>
