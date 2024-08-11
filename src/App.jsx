@@ -44,7 +44,12 @@ export default function App() {
       }
       setKirpichTimeConc(data)
     } else {
-      console.warn("Please ensure the slope (S) is between 0.001 and 0.2");
+      if (L > 100 || L < 1) {
+        toast.error("Please ensure the length (L) is between 1 and 100");
+      }
+      if (S > 0.2 || S < 0.001) {
+        toast.error("Please ensure the slope (S) is between 0.001 and 0.2");
+      }
     }
   };
 
@@ -210,7 +215,7 @@ export default function App() {
                     Submit
                   </button>
                 </div>
-               
+
               </div>
             </div>
           </div>
