@@ -37,7 +37,7 @@ export default function App() {
           if (tcCount >= slopes?.length - 1) break outerLoop;
 
           const Tc = 0.0195 * Math.pow(length, 0.77) / Math.pow(slope, 0.385);
-          data.push(`Tc-${length}=${Tc}`);
+          data.push(`Tc-${length}=${Tc.toFixed(3)}`);
           tcCount++;
 
         }
