@@ -7,13 +7,33 @@ export default function App() {
   const [kirpichtimeconc, setKirpichTimeConc] = useState([])
   const [kirpichlength, setKirpichLength] = useState(null)
   const [kirpichslope, setKirpichSlope] = useState(null)
-  const [scstimeconc, setScsTimeConc] = useState(0)
+  const [scstimeconc, setScsTimeConc] = useState([])
   const [scslength, setScsLength] = useState(null)
   const [scsslope, setScsSlope] = useState(null)
+
+  // pagination
+  const [currentKirpichPage, setCurrentKirpichPage] = useState(1);
+  const [currentscsPage, setCurrentScsPage] = useState(1);
+  const itemsPerPage = 10;
+
+  // Calculate total pages
+  const totalKirpichTablePage = Math.ceil(kirpichtimeconc.length / itemsPerPage);
+  const totalScsTablePage = Math.ceil(scstimeconc.length / itemsPerPage);
+
+  // Get current page data
+  const indexOfLastItemkirpich = currentKirpichPage * itemsPerPage;
+  const indexOfFirstItemkirpich = indexOfLastItemkirpich - itemsPerPage;
+  const currentKirpichItems = kirpichtimeconc.slice(indexOfFirstItemkirpich, indexOfLastItemkirpich);
+
+
+  // SCS page data
+  const indexOfLastItemscs = currentscsPage * itemsPerPage;
+  const indexOfFirstItemscs = indexOfLastItemscs - itemsPerPage;
+  const currentscsItems = scstimeconc.slice(indexOfFirstItemscs, indexOfLastItemkirpich);
+
   const calculateKirpichTime = () => {
     const L = parseFloat(kirpichlength);
     const S = parseFloat(kirpichslope);
-    const maxTcValues = 200; // Limit to 200 Tc values
 
     if (L > 0 && S >= 0.001 && S <= 0.2) {
       let slopes = [];
@@ -34,7 +54,7 @@ export default function App() {
       outerLoop:
       for (let slope of slopes) {
         for (let length of lengths) {
-          if (tcCount >= slopes?.length - 1) break outerLoop;
+          if (tcCount >= lengths?.length - 1) break outerLoop;
 
           const Tc = 0.0195 * Math.pow(length, 0.77) / Math.pow(slope, 0.385);
           data.push(`Tc-${length}=${Tc.toFixed(3)}`);
@@ -53,18 +73,94 @@ export default function App() {
     }
   };
 
-
-
   const calculateScsime = () => {
     const L = parseFloat(scslength);
     const S = parseFloat(scsslope);
 
-    if (L > 0 && S > 0) {
-      const Tc = 0.000877 * Math.pow(L, 0.8) * Math.pow((1000 / .45 - 9), .7) * Math.pow(S, -.5)
-      setScsTimeConc(Tc);
+    if (L > 0 && S >= 0.001 && S <= 0.2) {
+      let slopes = [];
+      for (let j = S; j <= 0.2; j += 0.001) {
+        slopes.push(j);
+        console.log(`Added slope: ${j}`); // Logging the slope values
+      }
+      // generate length up to 100
+      let lengths = [];
+      for (let i = L; i <= 100; i += 0.5) {
+        lengths.push(i);
+        console.log(`Added length: ${i}`); // Logging the length values
+      }
+      // generate CN TO 100 FROM 1 AT A STEP OF 0.5
+      let CN = [];
+      for (let a = 1; a <= 100; a += 0.5) {
+        CN.push(a);
+        console.log(`Added CN: ${a}`); // Logging the length values
+      }
+      let data = [];
+      let tcCount = 0;
+
+      outerLoop:
+      for (let slope of slopes) {
+        for (let length of lengths) {
+          for (let cn of CN) {
+            if (tcCount >= lengths?.length - 1) break outerLoop;
+
+            // const Tc = 0.0195 * Math.pow(length, 0.77) / Math.pow(slope, 0.385);
+            const SC = 0.000877 * Math.pow(L, 0.8) * Math.pow((1000 / cn - 9), .7) * Math.pow(S, -.5)
+
+            data.push(`SC-${length}=${SC.toFixed(3)}`);
+            tcCount++;
+          }
+        }
+      }
+      setScsTimeConc(data)
     } else {
-      setScsTimeConc(0);
+      if (L > 100 || L < 1) {
+        toast.error("Please ensure the length (L) is between 1 and 100");
+      }
+      if (S > 0.2 || S < 0.001) {
+        toast.error("Please ensure the slope (S) is between 0.001 and 0.2");
+      }
     }
+  };
+  const handleKirpichClick = (page) => {
+    setCurrentKirpichPage(page);
+  };
+
+  const handleScsClick = (page) => {
+    setCurrentScsPage(page);
+  };
+  const renderKirpichPageNumbers = () => {
+    const pageNumbers = [];
+    for (let i = 1; i <= totalKirpichTablePage; i++) {
+      pageNumbers.push(
+        <button
+          key={i}
+          onClick={() => handleKirpichClick(i)}
+          className={`px-3 py-1 mx-1 ${i === currentKirpichPage ? 'bg-blue-500 text-white' : 'bg-gray-200'
+            }`}
+        >
+          {i}
+        </button>
+      );
+    }
+    return pageNumbers;
+  };
+
+  const renderScsPageNumbers = () => {
+    const pageNumbers = [];
+    for (let i = 1; i <= totalScsTablePage; i++) {
+      pageNumbers.push(
+        <button
+          key={i}
+          onClick={() => handleScsClick(i)}
+          className={`px-3 py-1 mx-1 ${i === currentscsPage ? 'bg-blue-500 text-white' : 'bg-gray-200'
+            }`}
+        >
+          {i}
+        </button>
+      );
+    }
+    return pageNumbers;
   };
   useEffect(() => {
     const text1 = new SplitType(".hero_header");
@@ -123,7 +219,7 @@ export default function App() {
       );
   }, []);
 
-  console.log(kirpichtimeconc)
+  // console.log(scstimeconc)
 
   return (
     <div className="based" style={{ height }}>
@@ -179,15 +275,6 @@ export default function App() {
                 </div>
 
                 <div className="w-full flex items-center flex-wrap gap-2">
-                  {/* <span className="flex text-base text-[#000] font-semibold items-center gap-2">
-                    Tc1 =  {kirpichtimeconc}
-                  </span>
-                  <span className="flex text-base text-[#000] font-semibold items-center gap-2">
-                    Tc2 =  {kirpichtimeconc}
-                  </span>
-                  <span className="flex text-base text-[#000] font-semibold items-center gap-2">
-                    Tc200 =  {kirpichtimeconc}
-                  </span> */}
                 </div>
               </div>
             </div>
@@ -219,14 +306,70 @@ export default function App() {
               </div>
             </div>
           </div>
-          <div className="py-12 hero_card px-6 flex w-full rounded-lg bg-[#fff] items-center flex-wrap gap-4">
-            {
-              kirpichtimeconc?.map((time, index) => {
-                return <span className="flex text-base text-[#000] font-semibold items-center gap-2">
-                  {time},
-                </span>
-              })
-            }
+          <div className="w-full grid lg:grid-cols-2 gap-8">
+            <div className="py-12 hero_card px-6 flex w-full rounded-lg bg-[#fff] items-center flex-col gap-4">
+              <h4 className="text-2xl md:text-3xl font-bold md:text-start">
+                Kirpich Time of Concentration
+              </h4>
+              <div className="w-full flex flex-wrap gap-4">
+                <table className="min-w-full border-collapse border border-gray-400">
+                  <thead>
+                    <tr className="bg-gray-200">
+                      <th className="border border-gray-400 px-4 py-2">Index</th>
+                      <th className="border border-gray-400 px-4 py-2">Length</th>
+                      <th className="border border-gray-400 px-4 py-2">Tc</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {currentKirpichItems.map((time, index) => {
+                      const [length, Tc] = time.split('=');
+                      return (
+                        <tr key={index} className="bg-white even:bg-gray-100">
+                          <td className="border border-gray-400 px-4 py-2">{indexOfFirstItemkirpich + index + 1}</td>
+                          <td className="border border-gray-400 px-4 py-2">{length.split('-')[1]}</td>
+                          <td className="border border-gray-400 px-4 py-2">{Tc}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+                <div className="flex justify-center flex-wrap gap-2 mt-4">
+                  {renderKirpichPageNumbers()}
+                </div>
+              </div>
+            </div>
+            {/* scs time of concentration */}
+            <div className="py-12 hero_card px-6 flex w-full rounded-lg bg-[#fff] items-center flex-col gap-4">
+              <h4 className="text-2xl md:text-3xl font-bold md:text-start">
+                SCS Time of Concentration
+              </h4>
+              <div className="w-full flex flex-wrap gap-4">
+                <table className="min-w-full border-collapse border border-gray-400">
+                  <thead>
+                    <tr className="bg-gray-200">
+                      <th className="border border-gray-400 px-4 py-2">Index</th>
+                      <th className="border border-gray-400 px-4 py-2">Length</th>
+                      <th className="border border-gray-400 px-4 py-2">Tc</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {currentscsItems.map((time, index) => {
+                      const [length, Tc] = time.split('=');
+                      return (
+                        <tr key={index} className="bg-white even:bg-gray-100">
+                          <td className="border border-gray-400 px-4 py-2">{indexOfFirstItemscs + index + 1}</td>
+                          <td className="border border-gray-400 px-4 py-2">{length.split('-')[1]}</td>
+                          <td className="border border-gray-400 px-4 py-2">{Tc}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+                <div className="flex justify-center gap-2 flex-wrap mt-4">
+                  {renderScsPageNumbers()}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
