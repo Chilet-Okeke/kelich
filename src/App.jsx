@@ -29,7 +29,7 @@ export default function App() {
   // SCS page data
   const indexOfLastItemscs = currentscsPage * itemsPerPage;
   const indexOfFirstItemscs = indexOfLastItemscs - itemsPerPage;
-  const currentscsItems = scstimeconc.slice(indexOfFirstItemscs, indexOfLastItemkirpich);
+  const currentscsItems = scstimeconc.slice(indexOfFirstItemscs, indexOfLastItemscs);
 
   const calculateKirpichTime = () => {
     const L = parseFloat(kirpichlength);
@@ -81,13 +81,13 @@ export default function App() {
       let slopes = [];
       for (let j = S; j <= 0.2; j += 0.001) {
         slopes.push(j);
-        console.log(`Added slope: ${j}`); // Logging the slope values
+        // console.log(`Added slope: ${j}`); // Logging the slope values
       }
       // generate length up to 100
       let lengths = [];
       for (let i = L; i <= 100; i += 0.5) {
         lengths.push(i);
-        console.log(`Added length: ${i}`); // Logging the length values
+        // console.log(`Added length: ${i}`); // Logging the length values
       }
       // generate CN TO 100 FROM 1 AT A STEP OF 0.5
       let CN = [];
@@ -100,12 +100,12 @@ export default function App() {
 
       outerLoop:
       for (let slope of slopes) {
-        for (let length of lengths) {
-          for (let cn of CN) {
+        for (let cn of CN) {
+          for (let length of lengths) {
             if (tcCount >= lengths?.length - 1) break outerLoop;
 
             // const Tc = 0.0195 * Math.pow(length, 0.77) / Math.pow(slope, 0.385);
-            const SC = 0.000877 * Math.pow(L, 0.8) * Math.pow((1000 / cn - 9), .7) * Math.pow(S, -.5)
+            const SC = 0.000877 * Math.pow(length, 0.8) * Math.pow((1000 / cn - 9), .7) * Math.pow(slope, -.5)
 
             data.push(`SC-${length}=${SC.toFixed(3)}`);
             tcCount++;
@@ -147,9 +147,9 @@ export default function App() {
   };
 
   const renderScsPageNumbers = () => {
-    const pageNumbers = [];
+    const scspageNumbers = [];
     for (let i = 1; i <= totalScsTablePage; i++) {
-      pageNumbers.push(
+      scspageNumbers.push(
         <button
           key={i}
           onClick={() => handleScsClick(i)}
@@ -160,7 +160,7 @@ export default function App() {
         </button>
       );
     }
-    return pageNumbers;
+    return scspageNumbers;
   };
   useEffect(() => {
     const text1 = new SplitType(".hero_header");
@@ -218,8 +218,6 @@ export default function App() {
         }
       );
   }, []);
-
-  // console.log(scstimeconc)
 
   return (
     <div className="based" style={{ height }}>
